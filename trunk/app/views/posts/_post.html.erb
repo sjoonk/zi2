@@ -3,7 +3,7 @@
   <td><%= link_to post.category, posts_path(:category_id => post.category.id) %></td>
   <td><%= link_to post.title, post %></td>
   <td><%= post.attachments.size %></td>
-  <td><%= post.user %></td>
+  <td><%= link_to post.user, user_path(post.user.to_s) %></td>
 	<td><%= post.comments_count %></td>
   <td><%= post.read_count %></td>
   <td><%= post.diggs_count %></td>
