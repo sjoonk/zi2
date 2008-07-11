@@ -1,0 +1,85 @@
+<div>
+	<h3 class="title">
+		<%= link_to @post.title, post_path(@post, :project => @project) %>
+	</h3>
+	<p>
+	  <b>상태:</b>
+	  <%=h @post.state %>
+	  <span>
+	  <% if logged_in? && (current_user.admin? || @post.user == current_user) %>
+			(<% %w(start finish revoke).each do |event| %>
+				<%=	link_to(event, post_path(@post, :event => event) , :method => :put) if @post.next_state_for_event(event) %>
+			<% end %>)		
+		<% end %>
+		</span>
+	</p>
+	<p>
+	  <b>카테고리:</b>
+	  <%= display_breadcrumbs(@post.category.breadcrumbs) do |category| 
+	  	link_to_unless(category == @post.category, category, posts_path(:category_id => category.id)) 
+	  end %>
+	</p>
+
+	<div id="diggbox">
+		<h5><%= link_to '추천', digg_post_path(@post), :method => :put %></h5>
+		<span><%= @post.diggs.count %></span>
+	</div>
+	
+	<ul id="counts">
+		<li class="view-count"><a class="read_count"><span>조회수 <%= @post.read_count %></span></a></li>
+		<li id="digg"><span>추천</span> <%= @post.diggs.count %></li>
+	</ul>
+	
+	<div class="updated_at">
+		작성자 : <%= link_to @post.user, '#' %>
+		<%= @post.created_at.to_s(:db) %>
+	</div>
+				
+	<div id="post_content" class="xed">
+		<%= @post.content %>
+	</div>
+				
+	<div class="tag">
+	  <b>태그:</b>
+	  <%= @post.tag_list.join(', ') %>
+	</div>
+		
+	<h5>첨부</h5>
+	<ul>
+	<% @post.attachments.each do |attachment| %>
+		<li>
+			<%= image_tag 'paperclip.gif' %>
+			<%= link_to attachment.filename, attachment.public_filename %>
+		</li>
+	<% end %>
+	</ul>
+</div>		
+				
+				
+<div id="comments">	
+	<h4>답글</h4>
+	<div class="comment">
+		
+		<%= render :partial => 'comment', :collection => @post.comments %>
+		<% form_for :comment, :url => post_comments_path(@post, :project => @project), :html => { :id => "commentForm" } do |f| %>
+			<p>
+				<textarea name="comment[content]" id="comment_content" rows="3" cols="50"></textarea>
+			</p>
+			<input type="submit" value="저장" />
+		<% end %>
+</div>
+
+<p>
+	<h4>이전 글/ 다음 글</h4>
+	<table>
+		<%= render :partial => 'post', :object => @post.next unless @post.next == @post %>
+		<%= render :partial => 'post', :object => @post.previous unless @post.previous == @post %>
+	</table>
+</p>
+
+		
+<div id="go-list">
+	<%= link_to "목록", posts_path(:project => @project), :id => "indexButton", :class => "Button common-button default-button" %>
+</div>
+		
+		

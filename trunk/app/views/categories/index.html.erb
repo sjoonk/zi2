@@ -1,0 +1,59 @@
+<h2 class="caption"><span class="main-text">카테고리 관리</span></h2>
+<div id="treePreview" style="float: left;">
+	<%= render :partial => 'category' %>
+</div>
+<div id="controlPane" style="float: right;">
+	<fieldset>
+		<legend>관리 및 설정</legend>
+		
+		<% form_tag categories_path do %>
+			<%#= hidden_field_tag "category[parent_id]",@category ? @category.id : 0 %>
+			<input type="hidden" value="<%= @category ? @category.id : nil %>" name="category[parent_id]"/>
+			<dl>
+				<dt><label for="newCategory">만들기</label></dt>
+				<dd>
+					<input type="text" name="category[name]"/>
+					<input type="submit" value="추가하기"/>
+					<p>"<%= @category ? @category.name : '전체' %>"의 하위에 새 카테고리를 만듭니다.</p>
+				</dd>
+			</dl>
+		<% end %>
+				
+		<% form_tag category_path(@category), :method => :put do %>
+			<dl>
+				<dt><label for="modifyCategoryName">이름 변경</label></dt>
+				<dd>
+					<input type="text" name="category[name]" value="<%= @category ? @category.name : '전체' %>"/>
+					<input type="submit" value="변경하기"/>
+				</dd>
+			</dl>
+		<% end %>
+		
+		<dl class="line" id="label-move-line">
+			<dt><span class="label">정렬순서 변경</span></dt>
+			<dd><p>최상단 분류는 이동할 수 없습니다.</p></dd>
+				
+		</dl>
+		
+		<% form_tag category_path(@category), :method => :delete do %>
+			<dl class="line" id="label-remove-line">
+				<dt><span class="label">카테고리 삭제</span></dt>
+				<dd>
+				<% if @category %>
+					<% unless @category.has_children? %>
+						<input type="submit" value="삭제하기"/>
+					<% else %>
+						<p>하위 카테고리가 있으면 삭제할 수 없습니다.</p>				
+					<% end %>
+				<% else %>
+					<p>최상단 분류는 삭제할 수 없습니다.</p>				
+				<% end %>	
+				<dd>		
+			</dl>
+		<% end %>
+		
+	</fieldset>
+
+</div>
+	
+

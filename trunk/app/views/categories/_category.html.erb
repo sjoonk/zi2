@@ -1,0 +1,8 @@
+<% jquery_onload do %>
+	$('#category').treeview();
+<% end %>
+
+<%= link_to "전체", categories_path %> 
+<%= display_tree_recursive(@categories, nil) do |node|
+	link_to node.name, category_path(node.id)
+end %>

@@ -1,0 +1,6 @@
+<%= link_to_unless(params[:category_id].blank?, "전체", posts_path) + " (#{@post_total})" %> 
+<%= display_tree_recursive(@categories, nil) do |node|
+	link_to_unless(node.id.to_s == params[:category_id], 
+								 node.name, 
+								 posts_path(:category_id => node.id)) + " (#{node.all_posts_size})"
+end %>

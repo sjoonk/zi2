@@ -1,0 +1,16 @@
+<tr class='topseed'>
+  <tr>
+  <td><%= link_to post.category, posts_path(:category_id => post.category.id) %></td>
+  <td><%= link_to post.title, post %></td>
+  <td><%= post.attachments.size %></td>
+  <td><%= post.user %></td>
+	<td><%= post.comments_count %></td>
+  <td><%= post.read_count %></td>
+  <td><%= post.diggs_count %></td>
+  <td>
+	  <% if logged_in? && (current_user.admin? || post.user == current_user) %>
+	  	<%#= link_to 'e', edit_post_path(post) %>
+	  	<%= link_to image_tag('delete.gif'), post, :confirm => '삭제할까요?', :method => :delete %>
+  	<% end %>
+	</td>
+</tr>

@@ -1,0 +1,11 @@
+<ul class="comment-list">
+	<li class="comment comment">
+			<div><%= link_to comment.user %> : </div>
+			<div id="comment_info_25378" class="comment_info">
+				<span><%= comment.created_at.to_s(:db) %></span>
+			</div>
+			<div id="comment_content_25378" class="comment_content xed">
+				<%= comment.content %>				
+			</div>							
+	</li>
+</ul>
