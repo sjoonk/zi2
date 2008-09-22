@@ -1,0 +1,8 @@
+<div>
+<ul id='menu'>
+	<!-- Use hard-coding instead of this when production-ready -->
+	<% Group.all.each do |group| %>
+		<li class="<%= menu_current(group.name) %>"><a href="/<%= group.name %>"><%= group.title %></a></li>
+	<% end %>	
+</ul>
+</div>

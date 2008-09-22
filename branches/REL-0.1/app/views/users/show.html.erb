@@ -1,0 +1,31 @@
+<%= page_title @title + ' 프로파일' %>
+
+<div id="profile">
+	<div id="avatar" class="thumb"><%= image_tag(@user.avatar.url(:thumb)) %></div>
+	<ul>
+		<li><span>아이디</span>: <%= @user.login %></li>
+		<li><span>이메일</span>: <%= @user.email.gsub(/@/,' (at) ').gsub(/\./, ' (dot) ') %></li>
+		<% unless @user == current_user %>
+			<li><span>나와의 관계</span>:
+				<% if @user.is_friends_with? current_user %>
+					지인관계
+				<% elsif @user.is_pending_friends_with? current_user %>
+					<%= link_to '친구맺기 요청 중', user_friendships_path(current_user) %>
+				<% else %>
+					무
+				<% end %>	
+			</li> 
+		<% end %>	
+	</ul>
+	<% if @user == current_user %>
+		<div class="right"><%= button_link_to '정보변경', edit_user_path %></div>
+	<% elsif logged_in? && !@user.is_friends_or_pending_with?(current_user) %>
+		<%= button_link_to '지인맺기 요청', ask_user_friendship_path(current_user, @user), :method => :put %>
+	<% end %>
+</div>
+
+<br/>
+
+<%= page_title @title + ' 작성한 글들' %>
+
+<%= render :partial => 'zi2/posts/list' %>
